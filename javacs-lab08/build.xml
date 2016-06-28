@@ -3,13 +3,14 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="JavaCS">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="JavaCS" xmlns:ivy="antlib:org.apache.ivy.ant">
     <property environment="env"/>
     <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
     <path id="JavaCS.classpath">
+        <fileset dir="lib/ant_ivy" />
         <pathelement location="bin"/>
         <pathelement location="lib/jedis-2.8.0.jar"/>
         <pathelement location="lib/jsoup-1.8.3.jar"/>
@@ -33,9 +34,13 @@
     </target>
     <target name="clean">
         <delete dir="bin"/>
+        <delete dir="lib/ant_ivy" />
     </target>
     <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="resolve" description="--> retrieve dependencies with ivy">
+        <ivy:retrieve pattern="lib/ant_ivy/[artifact]-[type]-[revision].[ext]"/>
+    </target>
+    <target depends="resolve,build-subprojects,build-project" name="build"/>
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
