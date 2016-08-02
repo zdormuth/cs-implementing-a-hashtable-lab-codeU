@@ -40,11 +40,12 @@ public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
 	 * 
 	 */
 	protected void rehash() {
-        // TODO: fill this in.
+		// accessing maps (MyLinearMap) from the MyBetterMap class
 		int initialSize = maps.size();
 		int newSize = initialSize * 2;
 		// makes a new map that is double the size
 		List<MyLinearMap<K,V>> initialMaps = maps;
+		// makes an ArrayList and adds k many MyLinearMaps
 		makeMaps(newSize);
 		// rehashes entries in the newMap
 		for (MyLinearMap<K,V> newMap: initialMaps) {
